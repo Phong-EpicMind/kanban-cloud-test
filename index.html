@@ -52,9 +52,10 @@
   </form>
 </dialog>
 
-<dialog id="pal"><input id="palIn" placeholder="Gõ lệnh…" autocomplete="off"><ul id="palList"></ul></dialog>
+<dialog id="pal"><input id="palIn" placeholder="Gõ lệnh…" autocomplete="off"><ul id="palList" tabindex="0" role="listbox" aria-label="Kết quả lệnh"></ul></dialog>
 <dialog id="info"><div id="infoBody"></div><div class="actions"><span class="spacer"></span><button class="btn" onclick="this.closest('dialog').close()">Đóng</button></div></dialog>
 <input type="file" id="importFile" accept="application/json" hidden>
+<script src="logic.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
