@@ -3,42 +3,58 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kanban</title>
+<title>Kanban Pro</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="topbar">
   <h1><span class="logo">▦</span> Kanban</h1>
+  <select id="boardSel" aria-label="Chọn bảng"></select>
+  <button id="boardMenu" class="icon-btn" title="Quản lý bảng">⋯</button>
+  <span class="grow"></span>
   <input id="search" type="search" placeholder="Tìm thẻ…  ( / )" aria-label="Tìm kiếm">
-  <select id="filterPrio" aria-label="Lọc ưu tiên">
-    <option value="">Mọi ưu tiên</option>
-    <option value="high">Cao</option><option value="med">Trung bình</option><option value="low">Thấp</option>
-  </select>
-  <button id="themeBtn" class="icon-btn" title="Đổi giao diện">◐</button>
+  <select id="fPrio" aria-label="Lọc ưu tiên"><option value="">Ưu tiên</option><option value="high">Cao</option><option value="med">Trung bình</option><option value="low">Thấp</option></select>
+  <select id="fLabel" aria-label="Lọc nhãn"><option value="">Nhãn</option></select>
+  <button id="undoBtn" class="icon-btn" title="Hoàn tác (Ctrl+Z)">↶</button>
+  <button id="redoBtn" class="icon-btn" title="Làm lại (Ctrl+Shift+Z)">↷</button>
+  <button id="statsBtn" class="icon-btn" title="Thống kê">📊</button>
+  <button id="cmdBtn" class="icon-btn" title="Lệnh (Ctrl+K)">⌘</button>
+  <button id="themeBtn" class="icon-btn" title="Giao diện">◐</button>
   <button id="addCol" class="btn">+ Cột</button>
 </header>
 <main id="board" class="board" aria-label="Bảng Kanban"></main>
+<div id="toasts" aria-live="polite"></div>
 
 <dialog id="dlg">
   <form method="dialog" id="cardForm">
     <h2 id="dlgTitle">Thẻ mới</h2>
-    <label>Tiêu đề<input name="title" required maxlength="120"></label>
-    <label>Mô tả<textarea name="desc" rows="3"></textarea></label>
+    <label>Tiêu đề<input name="title" required maxlength="140"></label>
+    <label>Mô tả <small>(hỗ trợ **đậm**, *nghiêng*, `code`, link)</small><textarea name="desc" rows="3"></textarea></label>
     <div class="row">
-      <label>Ưu tiên
-        <select name="prio"><option value="low">Thấp</option><option value="med" selected>Trung bình</option><option value="high">Cao</option></select>
-      </label>
+      <label>Ưu tiên<select name="prio"><option value="low">Thấp</option><option value="med">Trung bình</option><option value="high">Cao</option></select></label>
       <label>Hạn chót<input type="date" name="due"></label>
     </div>
-    <label>Nhãn (cách nhau bằng dấu phẩy)<input name="tags" placeholder="design, bug"></label>
+    <div class="row">
+      <label>Người phụ trách<input name="who" placeholder="Tên"></label>
+      <label>Cột<select name="col"></select></label>
+    </div>
+    <label>Nhãn (dấu phẩy)<input name="tags" placeholder="design, bug"></label>
+    <div class="checkwrap"><div class="checkhead">Checklist <span id="checkPct"></span></div><div id="checkList"></div>
+      <div class="row"><input id="checkNew" placeholder="Thêm việc con + Enter"></div></div>
     <div class="actions">
       <button type="button" id="delCard" class="btn danger">Xoá</button>
+      <button type="button" id="dupCard" class="btn ghost">Nhân bản</button>
+      <button type="button" id="arcCard" class="btn ghost">Lưu trữ</button>
       <span class="spacer"></span>
       <button type="button" id="cancel" class="btn ghost">Huỷ</button>
       <button class="btn" value="ok">Lưu</button>
     </div>
   </form>
 </dialog>
+
+<dialog id="pal"><input id="palIn" placeholder="Gõ lệnh…" autocomplete="off"><ul id="palList"></ul></dialog>
+<dialog id="info"><div id="infoBody"></div><div class="actions"><span class="spacer"></span><button class="btn" onclick="this.closest('dialog').close()">Đóng</button></div></dialog>
+<input type="file" id="importFile" accept="application/json" hidden>
 <script src="app.js"></script>
 </body>
 </html>
